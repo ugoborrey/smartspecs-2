@@ -2,6 +2,7 @@
 import base64
 import json
 import os
+import sys
 from io import BytesIO
 from pathlib import Path
 from typing import Any, Dict, List
@@ -17,6 +18,17 @@ from PIL import Image
 from pydantic import BaseModel, Field
 from pydantic.json import pydantic_encoder
 from typing import Optional
+
+from extractors.shared.product_document_utils import (
+    build_meta,
+    make_document_id,
+    to_project_relative,
+    write_product_document,
+)
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
 
 load_dotenv()
 client = OpenAI()

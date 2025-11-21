@@ -22,7 +22,13 @@ from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from product_document_utils import (
+# Allow running as a script from project root or this folder
+ROOT = Path(__file__).resolve().parents[2]
+import sys
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
+from extractors.shared.product_document_utils import (
     build_meta,
     make_document_id,
     write_product_document,

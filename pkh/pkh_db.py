@@ -1,4 +1,3 @@
-import json
 import os
 from datetime import datetime, timezone
 from typing import Optional, Tuple
@@ -7,7 +6,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Json
 
-from pkh_models import ProductDocument
+from pkh.pkh_models import ProductDocument
 
 
 def get_conn():

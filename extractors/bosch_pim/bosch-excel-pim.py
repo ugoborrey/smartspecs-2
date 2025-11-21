@@ -14,7 +14,12 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from product_document_utils import (
+# Allow running as a script from project root or this folder
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
+from extractors.shared.product_document_utils import (  # type: ignore
     build_meta,
     make_document_id,
     to_project_relative,

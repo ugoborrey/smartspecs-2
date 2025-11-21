@@ -1,11 +1,22 @@
 import logging
+import sys
+from pathlib import Path
 from typing import Dict
 
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 
-from pkh_db import get_conn, insert_product_document, refresh_canonical
-from pkh_models import ProductDocument
+# Load env (DATABASE_URL, etc.)
+load_dotenv()
+
+# Ensure project root is on sys.path so imports work regardless of CWD
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
+from pkh.pkh_db import get_conn, insert_product_document, refresh_canonical
+from pkh.pkh_models import ProductDocument
 
 logger = logging.getLogger(__name__)
 

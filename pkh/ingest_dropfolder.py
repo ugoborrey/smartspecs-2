@@ -7,10 +7,20 @@ drop/archive/ (or drop/error/ on failure).
 
 import json
 import shutil
+import sys
 from pathlib import Path
 
-from pkh_db import get_conn, insert_product_document, refresh_canonical
-from pkh_models import ProductDocument
+from dotenv import load_dotenv
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
+# Load env (DATABASE_URL, etc.)
+load_dotenv()
+
+from pkh.pkh_db import get_conn, insert_product_document, refresh_canonical
+from pkh.pkh_models import ProductDocument
 
 DROP_DIR = Path("drop/product-documents")
 ARCHIVE_DIR = Path("drop/archive")
