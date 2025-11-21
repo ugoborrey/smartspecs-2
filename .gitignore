@@ -1,12 +1,24 @@
+# Virtual env & Python artifacts
 .venv/
-.env
 __pycache__/
+*.py[cod]
+
+# Env/config
+.env
 .DS_Store
+.idea/
+.vscode/
+
+# Outputs & generated assets
 output/
 drop/
 extracted_images/
-input/
-*.log
 rubix_final.csv
 rubix_final.json
+
+# Large/temporary inputs (keep samples elsewhere if needed)
+input/
 bosch-excel-example-10-products.xlsx
+
+# Logs
+*.log
