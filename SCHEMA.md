@@ -106,6 +106,8 @@ CREATE TABLE products_canonical (
 CREATE INDEX idx_product_documents_mfg_ref_brand ON product_documents (manufacturer_reference, brand);
 CREATE INDEX idx_product_documents_document_id ON product_documents (document_id);
 CREATE INDEX idx_product_documents_payload_gin ON product_documents USING GIN (payload);
+-- Idempotence: éviter la ré-ingestion du même document_id
+CREATE UNIQUE INDEX IF NOT EXISTS ux_product_documents_document_id ON product_documents (document_id);
 
 -- Contrainte UNIQUE sur products_canonical (une seule ligne par produit logique)
 CREATE UNIQUE INDEX idx_products_canonical_mfg_ref_brand ON products_canonical (manufacturer_reference, brand);
