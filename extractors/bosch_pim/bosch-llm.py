@@ -226,7 +226,7 @@ def build_response_format() -> Dict[str, Any]:
 
 def build_system_prompt() -> str:
     return (
-        "Tu es un extracteur qui mappe ces données vers le JSON schema demandé"
+        "Tu es un extracteur qui mappe ces données vers le JSON schema demandé. Tips: orderNumber is the manufacturer reference."
     )
 
 

@@ -15,7 +15,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from pkh.pkh_db import get_conn, insert_product_document, refresh_canonical
+from pkh.pkh_db import (
+    fetch_canonical_product,
+    get_conn,
+    insert_product_document,
+    refresh_canonical,
+)
 from pkh.pkh_models import ProductDocument
 
 logger = logging.getLogger(__name__)
@@ -50,4 +55,23 @@ def ingest_product_document(doc: ProductDocument, conn=Depends(get_connection)):
         return {"status": "ingested", "id": new_id}
     except Exception as exc:
         logger.exception("Failed to ingest document_id=%s", doc.meta.document_id)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/products_canonical")
+def get_canonical(manufacturer_reference: str, brand: str, conn=Depends(get_connection)):
+    try:
+        def norm(s: str) -> str:
+            return (s or "").strip()
+
+        mr_n = norm(manufacturer_reference)
+        brand_n = norm(brand)
+        product = fetch_canonical_product(conn, mr_n, brand_n)
+        if not product:
+            raise HTTPException(status_code=404, detail="Not found")
+        return {"manufacturer_reference": mr_n, "brand": brand_n, "product": product}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception("Failed to fetch canonical %s / %s", manufacturer_reference, brand)
         raise HTTPException(status_code=500, detail=str(exc))

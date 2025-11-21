@@ -141,3 +141,24 @@ def refresh_canonical(conn, manufacturer_reference: str, brand: str) -> bool:
         )
     conn.commit()
     return True
+
+
+def fetch_canonical_product(conn, manufacturer_reference: str, brand: str) -> Optional[dict]:
+    """Return canonical_payload->'product' for a given key, or None if not found."""
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT canonical_payload
+            FROM products_canonical
+            WHERE manufacturer_reference = %(mr)s AND brand = %(brand)s
+            LIMIT 1;
+            """,
+            {"mr": manufacturer_reference, "brand": brand},
+        )
+        row = cur.fetchone()
+    if not row:
+        return None
+    payload = row["canonical_payload"] or {}
+    if isinstance(payload, dict):
+        return payload.get("product") or payload
+    return None
