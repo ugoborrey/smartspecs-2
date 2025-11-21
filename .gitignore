@@ -1,0 +1,12 @@
+.venv/
+.env
+__pycache__/
+.DS_Store
+output/
+drop/
+extracted_images/
+input/
+*.log
+rubix_final.csv
+rubix_final.json
+bosch-excel-example-10-products.xlsx
